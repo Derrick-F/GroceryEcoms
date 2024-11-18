@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  promo_type: MyString
+  value: 9.99
+  start_time: 2024-11-17 21:47:54
+  end_time: 2024-11-17 21:47:54
+  category: one
+  item: one
+
+two:
+  promo_type: MyString
+  value: 9.99
+  start_time: 2024-11-17 21:47:54
+  end_time: 2024-11-17 21:47:54
+  category: two
+  item: two

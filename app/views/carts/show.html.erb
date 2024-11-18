@@ -1,10 +1,45 @@
-<p style="color: green"><%= notice %></p>
+<h1>Your Cart</h1>
 
-<%= render @cart %>
+<table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Weight</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cart_items.each do |cart_item| %>
+      <tr>
+        <td><%= cart_item.item.name %></td>
+        <td><%= cart_item.quantity || "N/A" %></td>
+        <td><%= cart_item.weight || "N/A" %></td>
+        <td><%= cart_item.item.price %></td>
+        <td>
+          <%= link_to 'Remove', remove_item_cart_path(@cart, cart_item), method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
-<div>
-  <%= link_to "Edit this cart", edit_cart_path(@cart) %> |
-  <%= link_to "Back to carts", carts_path %>
-
-  <%= button_to "Destroy this cart", @cart, method: :delete %>
-</div>
+<h2>Add Item to Cart</h2>
+<%= form_with url: add_item_cart_path(@cart), method: :post, local: true do |f| %>
+  <div>
+    <%= label_tag :item_id, "Select Item" %>
+    <%= select_tag :item_id, options_from_collection_for_select(Item.all, :id, :name), prompt: "Choose an item" %>
+  </div>
+  <div>
+    <%= label_tag :quantity, "Quantity" %>
+    <%= number_field_tag :quantity, 1 %>
+  </div>
+  <div>
+    <%= label_tag :weight, "Weight (if applicable)" %>
+    <%= number_field_tag :weight, 0.0, step: 0.1 %>
+  </div>
+  <div>
+    <%= submit_tag "Add to Cart" %>
+  </div>
+<% end %>

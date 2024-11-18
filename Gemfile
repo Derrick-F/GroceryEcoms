@@ -33,6 +33,14 @@ gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
+#
+## For general pry usage in Rails
+gem "pry-rails"
+
+# Optionally, for enhanced debugging tools
+gem "pry-byebug"     # Enables step-through debugging and breakpoints
+gem "pry-stack_explorer"  # Explore the call stack in Pry
+
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

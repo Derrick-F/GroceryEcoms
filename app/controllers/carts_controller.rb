@@ -4,6 +4,8 @@ class CartsController < ApplicationController
   # Show the cart and its items
   def show
     @cart_items = @cart.cart_items.includes(:item)
+    # Uses a service object to apply promotions to the cart items
+    PromotionEngine.new(@cart).apply_best_promotions
   end
 
   # Add an item to the cart

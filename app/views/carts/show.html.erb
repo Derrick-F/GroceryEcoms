@@ -4,28 +4,34 @@
   <thead>
     <tr>
       <th>Item</th>
-      <th>Quantity</th>
-      <th>Weight</th>
+      <th>Quantity/Weight</th>
       <th>Price</th>
-      <th>Actions</th>
+      <th>Discount</th>
+      <th>Total After Discount</th>
     </tr>
   </thead>
   <tbody>
     <% @cart_items.each do |cart_item| %>
       <tr>
         <td><%= cart_item.item.name %></td>
-        <td><%= cart_item.quantity || "N/A" %></td>
-        <td><%= cart_item.weight || "N/A" %></td>
-        <td><%= cart_item.item.price %></td>
         <td>
-          <%= link_to 'Remove', remove_item_cart_path(@cart, cart_item), method: :delete, data: { confirm: 'Are you sure?' } %>
+          <%= cart_item.quantity.to_i if cart_item.quantity > 0 %>
+          <%= cart_item.weight.to_i if cart_item.weight > 0 %> grams
         </td>
+        <td><%= number_to_currency(cart_item.total_price) %></td>
+        <td><%= number_to_currency(cart_item.discount) %></td>
+        <td><%= number_to_currency(cart_item.total_price - cart_item.discount) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<h2>Add Item to Cart</h2>
+<h2>Cart Summary</h2>
+<p>Total Discount: <%= number_to_currency(@cart_items.sum(&:discount)) %></p>
+<p>Total After Discount: <%= number_to_currency(@cart_items.sum { |ci| ci.total_price - ci.discount }) %></p>
+
+
+<h2>Manually Add Item to Cart</h2>
 <%= form_with url: add_item_cart_path(@cart), method: :post, local: true do |f| %>
   <div>
     <%= label_tag :item_id, "Select Item" %>

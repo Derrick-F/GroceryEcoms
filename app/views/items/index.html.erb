@@ -18,10 +18,18 @@
             <%= f.hidden_field :item_id, value: item.id %>
             <%= f.hidden_field :cart_id, value: @cart.id %>
 
-            <div>
-              <%= label_tag :quantity, "Quantity" %>
-              <%= number_field_tag :quantity, 1 %>
-            </div>
+            <% if item.sold_by_weight? %>
+              <div>
+                <%= label_tag :weight, "Weight (in grams)" %>
+                <%= number_field_tag :weight, nil, step: 0.01, min: 0.01 %>
+              </div>
+            <% else %>
+              <div>
+                <%= label_tag :quantity, "Quantity" %>
+                <%= number_field_tag :quantity, 1, min: 1 %>
+              </div>
+            <% end %>
+
             <div>
               <%= submit_tag "Add to Cart" %>
             </div>

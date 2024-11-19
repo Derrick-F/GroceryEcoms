@@ -8,15 +8,27 @@ class CartsController < ApplicationController
 
   # Add an item to the cart
   def add_item
-    # Find the item to be added
     item = Item.find(params[:item_id])
-    quantity = params[:quantity].to_i
-    weight = params[:weight].to_f
 
-    # Use CartService to handle the logic
-    CartService.new(@cart).add_item(item, quantity, 0)
-    redirect_to @cart, notice: "Item added to cart successfully!"
+    if item.sold_by_weight?
+      weight = params[:weight].to_f
+      if weight > 0
+        CartService.new(@cart).add_item(item, 0, weight) # when quantity = 0, Weight is passed
+        redirect_to @cart, notice: "Item added to cart successfully!"
+      else
+        redirect_to items_path, alert: "Please specify a valid weight for #{item.name}."
+      end
+    else
+      quantity = params[:quantity].to_i
+      if quantity > 0
+        CartService.new(@cart).add_item(item, quantity, 0) # when Weight = 0, Quantity is passed
+        redirect_to @cart, notice: "Item added to cart successfully!"
+      else
+        redirect_to items_path, alert: "Please specify a valid quantity for #{item.name}."
+      end
+    end
   end
+
 
   # Remove an item from the cart
   def remove_item

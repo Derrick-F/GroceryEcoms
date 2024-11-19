@@ -32,11 +32,15 @@ class CartsController < ApplicationController
   end
 
 
-  # Remove an item from the cart
+  # Remove an item from the cart but also have a rescue if for some reason it cant be found or destroyed
   def remove_item
-    cart_item = CartItem.find(params[:id])
-    cart_item.destroy
-    redirect_to @cart, notice: "Item removed from cart."
+    cart_item = CartItem.find_by(id: params[:id])
+    if cart_item
+      cart_item.destroy
+      redirect_to cart_path(params[:cart_id]), notice: "#{cart_item.item.name} was removed from the cart."
+    else
+      redirect_to cart_path(params[:cart_id]), alert: "Item not found in the cart."
+    end
   end
 
   private

@@ -1,5 +1,7 @@
 <h1>Items</h1>
 
+<%= link_to "View Cart", @cart ? cart_path(@cart) : root_path, class: "button" %>
+
 <table>
   <thead>
     <tr>

@@ -14,7 +14,7 @@ class CartsController < ApplicationController
     weight = params[:weight].to_f
 
     # Use CartService to handle the logic
-    CartService.new(@cart).add_item(item, quantity, weight)
+    CartService.new(@cart).add_item(item, quantity, 0)
     redirect_to @cart, notice: "Item added to cart successfully!"
   end
 

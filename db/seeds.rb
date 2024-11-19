@@ -11,7 +11,6 @@ seafood = Category.create!(name: "Seafood")
 meat = Category.create!(name: "Meat")
 dry_grocery = Category.create!(name: "Dry Grocery")
 
-# Items
 Item.create!([
   { name: "Apple", price: 1.2, unit_type: "weight", brand: "OrganicFarm", category: produce },
   { name: "Arugula", price: 0.8, unit_type: "weight", brand: "Olivia's Organics", category: produce },
@@ -21,4 +20,11 @@ Item.create!([
   { name: "Salmon Fillet", price: 7.38, unit_type: "weight", brand: "Almeida Fisheries", category: seafood },
   { name: "Chicken Thighs", price: 4.99, unit_type: "weight", brand: "Bell & Evans", category: meat },
   { name: "Penne Pasta", price: 2.30, unit_type: "quantity", brand: "Tarquini Macaroni", category: dry_grocery }
+])
+
+Promotion.create!([
+  { promo_type: "flat_fee", value: 10.0, start_time: 1.day.ago, end_time: 1.week.from_now, category: Category.find_by(name: "Produce"), item: nil },
+  { promo_type: "percentage", value: 20.0, start_time: Time.now, end_time: 3.days.from_now, category: nil, item: Item.find_by(name: "Milk") },
+  { promo_type: "buy_x_get_y", value: 1, start_time: Time.now, end_time: 1.month.from_now, category: nil, item: Item.find_by(name: "Penne Pasta") },
+  { promo_type: "weight_threshold", value: 0.5, start_time: 1.hour.ago, end_time: 2.weeks.from_now, category: nil, item: Item.find_by(name: "Chicken Thighs") }
 ])

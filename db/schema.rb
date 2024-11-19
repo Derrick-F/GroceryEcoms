@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_18_024813) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_19_025339) do
   create_table "cart_items", force: :cascade do |t|
     t.integer "cart_id", null: false
     t.integer "item_id", null: false
@@ -49,8 +49,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_18_024813) do
     t.decimal "value"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.integer "category_id", null: false
-    t.integer "item_id", null: false
+    t.integer "category_id"
+    t.integer "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_promotions_on_category_id"

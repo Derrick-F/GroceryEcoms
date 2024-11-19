@@ -1,10 +1,51 @@
-<p style="color: green"><%= notice %></p>
+<h1>Your Cart</h1>
 
-<%= render @cart %>
+<table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Quantity/Weight</th>
+      <th>Price</th>
+      <th>Discount</th>
+      <th>Total After Discount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cart_items.each do |cart_item| %>
+      <tr>
+        <td><%= cart_item.item.name %></td>
+        <td>
+          <%= cart_item.quantity.to_i if cart_item.quantity > 0 %>
+          <%= cart_item.weight.to_i if cart_item.weight > 0 %> grams
+        </td>
+        <td><%= number_to_currency(cart_item.total_price) %></td>
+        <td><%= number_to_currency(cart_item.discount) %></td>
+        <td><%= number_to_currency(cart_item.total_price - cart_item.discount) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
-<div>
-  <%= link_to "Edit this cart", edit_cart_path(@cart) %> |
-  <%= link_to "Back to carts", carts_path %>
+<h2>Cart Summary</h2>
+<p>Total Discount: <%= number_to_currency(@cart_items.sum(&:discount)) %></p>
+<p>Total After Discount: <%= number_to_currency(@cart_items.sum { |ci| ci.total_price - ci.discount }) %></p>
 
-  <%= button_to "Destroy this cart", @cart, method: :delete %>
-</div>
+
+<h2>Manually Add Item to Cart</h2>
+<%= form_with url: add_item_cart_path(@cart), method: :post, local: true do |f| %>
+  <div>
+    <%= label_tag :item_id, "Select Item" %>
+    <%= select_tag :item_id, options_from_collection_for_select(Item.all, :id, :name), prompt: "Choose an item" %>
+  </div>
+  <div>
+    <%= label_tag :quantity, "Quantity" %>
+    <%= number_field_tag :quantity, 1 %>
+  </div>
+  <div>
+    <%= label_tag :weight, "Weight (if applicable)" %>
+    <%= number_field_tag :weight, 0.0, step: 0.1 %>
+  </div>
+  <div>
+    <%= submit_tag "Add to Cart" %>
+  </div>
+<% end %>

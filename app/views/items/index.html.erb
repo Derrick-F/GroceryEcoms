@@ -1,16 +1,41 @@
-<p style="color: green"><%= notice %></p>
-
-<% content_for :title, "Items" %>
-
 <h1>Items</h1>
 
-<div id="items">
-  <% @items.each do |item| %>
-    <%= render item %>
-    <p>
-      <%= link_to "Show this item", item %>
-    </p>
-  <% end %>
-</div>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item.name %></td>
+        <td><%= number_to_currency(item.price) %></td>
+        <td>
+          <%= form_with url: add_item_cart_path(@cart), method: :post, local: true do |f| %>
+            <%= f.hidden_field :item_id, value: item.id %>
+            <%= f.hidden_field :cart_id, value: @cart.id %>
 
-<%= link_to "New item", new_item_path %>
+            <% if item.sold_by_weight? %>
+              <div>
+                <%= label_tag :weight, "Weight (in grams)" %>
+                <%= number_field_tag :weight, nil, step: 0.01, min: 0.01 %>
+              </div>
+            <% else %>
+              <div>
+                <%= label_tag :quantity, "Quantity" %>
+                <%= number_field_tag :quantity, 1, min: 1 %>
+              </div>
+            <% end %>
+
+            <div>
+              <%= submit_tag "Add to Cart" %>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

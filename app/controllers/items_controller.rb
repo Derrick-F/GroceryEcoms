@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: %i[ show edit update destroy ]
+  before_action :set_cart
 
   # GET /items or /items.json
   def index
@@ -66,5 +67,10 @@ class ItemsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def item_params
       params.require(:item).permit(:name, :price, :unit_type, :brand, :category_id)
+    end
+
+    def set_cart
+      @cart = Cart.find_or_create_by(id: session[:cart_id])
+      session[:cart_id] = @cart.id
     end
 end
